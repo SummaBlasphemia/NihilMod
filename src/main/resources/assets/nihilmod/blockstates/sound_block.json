@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "nihilmod:block/sound_block"
+    }
+  }
+}

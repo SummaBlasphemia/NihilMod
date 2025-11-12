@@ -1,7 +1,12 @@
 package net.baal.nihilmod;
 
 import com.mojang.logging.LogUtils;
+import net.baal.nihilmod.block.ModBlocks;
+import net.baal.nihilmod.item.ModCreativeModTabs;
+import net.baal.nihilmod.item.ModItems;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -21,8 +26,14 @@ public class NihilMod {
     public static final String MOD_ID = "nihilmod";
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    @SuppressWarnings("removal")
     public NihilMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        ModCreativeModTabs.register(modEventBus);
+
+        ModItems.ITEMS.register(modEventBus);
+        ModBlocks.BLOCKS.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
@@ -36,7 +47,10 @@ public class NihilMod {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
+        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.SAPPHIRE);
+            event.accept(ModItems.RAW_SAPPHIRE);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
